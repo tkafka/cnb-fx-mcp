@@ -1,10 +1,19 @@
 ### CNB FX MCP Server
 
-A minimal Model Context Protocol (MCP) server that fetches a Czech National Bank (ČNB) FX rate for a given currency code on a given date by scraping the official daily rates page.
+Fetches FX rates from the Czech National Bank (ČNB) for a given currency and date by scraping the daily rates page. See the official page: [Kurzy devizového trhu – ČNB](https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/).
 
-- **Source**: ČNB daily rates HTML page (`https://www.cnb.cz/.../index.html?date=dd.mm.yyyy`)
-- **Input**: currency code (3 letters), date (`dd.mm.yyyy` or `yyyy-mm-dd`)
-- **Output**: FX rate text in CZK with dot decimal (e.g., `20.885`) or an error
+Paste this into your MCP config (adjust the absolute path):
+```json
+"cnb-fx": {
+  "command": "node",
+  "args": [
+    "/absolute/path/to/cnb-fx-mcp/dist/index.js"
+  ],
+  "cwd": "/absolute/path/to/cnb-fx-mcp"
+}
+```
+
+# For developers
 
 ### Requirements
 
@@ -23,7 +32,7 @@ pnpm install
 pnpm run build
 ```
 
-- Outputs `dist/server.js` and compiled test artifacts.
+- Outputs `dist/index.js` and compiled test artifacts.
 
 ### Run (stdio MCP server)
 
@@ -38,7 +47,7 @@ pnpm start
 
 This server speaks MCP over stdio. Any MCP client that supports stdio can launch it with:
 - **Command**: `node`
-- **Args**: `dist/server.js`
+- **Args**: `dist/index.js`
 - **CWD**: project root
 
 ### Tool contract
@@ -84,7 +93,7 @@ pnpm run test:fetch
 
 - Launch via stdio:
   - **command**: `node`
-  - **args**: `dist/server.js`
+  - **args**: `dist/index.js`
   - **cwd**: repository root
 - After initialization, call:
   - `tools/list` → verify `get_cnb_fx_rate`
@@ -98,7 +107,7 @@ If your client supports static server config, point it to the above command and 
 
 - Build: `pnpm run build`
 - Distribute the built files from `dist/`
-- Run with: `node dist/server.js`
+- Run with: `node dist/index.js`
 
 No additional configuration is required. The server fetches the official CNB HTML page directly.
 
